@@ -17,8 +17,11 @@ export class BooksService {
     return await this.bookRepository.save(book);
   }
 
-  async findAll() {
-    return await this.bookRepository.find();
+  async findAll(read?: boolean): Promise<Book[]> {
+    if (read !== undefined) {
+      return this.bookRepository.find({ where: { isRead: read } });
+    }
+    return this.bookRepository.find();
   }
 
   async findOne(id: number) {
