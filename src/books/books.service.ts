@@ -21,7 +21,7 @@ export class BooksService {
     if (read !== undefined) {
       return this.bookRepository.find({ where: { isRead: read } });
     }
-    return this.bookRepository.find();
+    return this.bookRepository.find({ order: { id: 'ASC' } });
   }
 
   async findOne(id: number) {
@@ -32,8 +32,10 @@ export class BooksService {
     return bookFound;
   }
 
-  update(id: number, updateBookDto: UpdateBookDto) {
-    return `This action updates a #${id} book`;
+  async update(id: number, updateBookDto: UpdateBookDto): Promise<Book> {
+    const bookUpdate = await this.findOne(id);
+    await this.bookRepository.update(id, updateBookDto);
+    return bookUpdate;
   }
 
   async remove(id: number) {
