@@ -25,11 +25,11 @@ export class BooksService {
   }
 
   async findOne(id: number): Promise<Book> {
-    const bookFound = await this.bookRepository.findOneBy({ id });
-    if (!bookFound) {
+    const foundBook = await this.bookRepository.findOneBy({ id });
+    if (!foundBook) {
       throw new NotFoundException(`Book with id ${id} does not exist`);
     }
-    return bookFound;
+    return foundBook;
   }
 
   async update(id: number, updateBookDto: UpdateBookDto): Promise<Book> {
@@ -40,9 +40,9 @@ export class BooksService {
   }
 
   async remove(id: number): Promise<Book> {
-    const bookRemove = await this.findOne(id);
+    const removeBook = await this.findOne(id);
     await this.bookRepository.softDelete(id);
-    return bookRemove;
+    return removeBook;
   }
 
   async restore(id: number): Promise<Book> {
