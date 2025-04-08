@@ -12,9 +12,9 @@ export class BooksService {
     private readonly bookRepository: Repository<Book>,
   ) {}
 
-  async create(createBookDto: CreateBookDto) {
-    const book = this.bookRepository.create(createBookDto);
-    return await this.bookRepository.save(book);
+  async create(createBookDto: CreateBookDto): Promise<Book> {
+    const createBook = this.bookRepository.create(createBookDto);
+    return await this.bookRepository.save(createBook);
   }
 
   async findAll(read?: boolean): Promise<Book[]> {
