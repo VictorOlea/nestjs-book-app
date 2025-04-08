@@ -40,6 +40,11 @@ export class BooksController {
     return this.booksService.update(+id, updateBookDto);
   }
 
+  @Patch(':id/restore')
+  async restore(@Param('id') id: string): Promise<Book> {
+    return this.booksService.restore(+id);
+  }
+
   @Delete(':id')
   async remove(@Param('id') id: string): Promise<Book> {
     return this.booksService.remove(+id);

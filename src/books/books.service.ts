@@ -43,4 +43,19 @@ export class BooksService {
     await this.bookRepository.softDelete(id);
     return bookRemove;
   }
+
+  async restore(id: number): Promise<Book> {
+    const deletedBook = await this.bookRepository.findOne({
+      where: { id },
+      withDeleted: true,
+    });
+
+    if (!deletedBook) {
+      throw new NotFoundException(`Book with id ${id} not found`);
+    }
+
+    await this.bookRepository.restore(id);
+
+    return deletedBook;
+  }
 }
