@@ -24,7 +24,7 @@ export class BooksService {
     return this.bookRepository.find({ order: { id: 'ASC' } });
   }
 
-  async findOne(id: number) {
+  async findOne(id: number): Promise<Book> {
     const bookFound = await this.bookRepository.findOneBy({ id });
     if (!bookFound) {
       throw new NotFoundException(`Book with id ${id} does not exist`);
@@ -33,9 +33,10 @@ export class BooksService {
   }
 
   async update(id: number, updateBookDto: UpdateBookDto): Promise<Book> {
-    const bookUpdate = await this.findOne(id);
+    await this.findOne(id);
     await this.bookRepository.update(id, updateBookDto);
-    return bookUpdate;
+    const updatedBook = await this.findOne(id);
+    return updatedBook;
   }
 
   async remove(id: number): Promise<Book> {
