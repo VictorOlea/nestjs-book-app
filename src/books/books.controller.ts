@@ -33,7 +33,7 @@ export class BooksController {
   }
 
   @Patch(':id')
-  update(
+  async update(
     @Param('id') id: string,
     @Body() updateBookDto: UpdateBookDto,
   ): Promise<Book> {
@@ -41,7 +41,7 @@ export class BooksController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string): Promise<Book> {
     return this.booksService.remove(+id);
   }
 }

@@ -38,7 +38,7 @@ export class BooksService {
     return bookUpdate;
   }
 
-  async remove(id: number) {
+  async remove(id: number): Promise<Book> {
     const bookRemove = await this.findOne(id);
     await this.bookRepository.softDelete(id);
     return bookRemove;
