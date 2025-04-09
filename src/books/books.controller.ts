@@ -12,6 +12,7 @@ import { BooksService } from './books.service';
 import { CreateBookDto } from './dto/create-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
 import { Book } from './entities/book.entity';
+import { SearchBookDto } from './dto/search-book.dto';
 
 @Controller('books')
 export class BooksController {
@@ -25,6 +26,11 @@ export class BooksController {
   @Get()
   async findAll(@Query('read') read?: boolean): Promise<Book[]> {
     return this.booksService.findAll(read);
+  }
+
+  @Get('search')
+  async findByName(@Query() query: SearchBookDto): Promise<Book[]> {
+    return this.booksService.searchByName(query.title);
   }
 
   @Get(':id')

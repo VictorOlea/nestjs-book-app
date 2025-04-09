@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateBookDto } from './dto/create-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
 import { Book } from './entities/book.entity';
-import { Repository } from 'typeorm';
+import { ILike, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
@@ -30,6 +30,21 @@ export class BooksService {
       throw new NotFoundException(`Book with id ${id} does not exist`);
     }
     return foundBook;
+  }
+
+  async searchByName(title: string): Promise<Book[]> {
+    const searchBook = await this.bookRepository.find({
+      where: {
+        title: ILike(`%${title}%`),
+      },
+      order: {
+        title: 'ASC',
+      },
+    });
+    if (searchBook.length === 0) {
+      throw new NotFoundException(`No books found with title contain ${title}`);
+    }
+    return searchBook;
   }
 
   async update(id: number, updateBookDto: UpdateBookDto): Promise<Book> {
