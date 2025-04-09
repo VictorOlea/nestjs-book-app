@@ -15,6 +15,7 @@ import { UpdateBookDto } from './dto/update-book.dto';
 import { Book } from './entities/book.entity';
 import { SearchBookDto } from './dto/search-book.dto';
 import { ParamsIdDto } from './dto/params-id.dto';
+import { FilterBookDto } from './dto/filter-book.dto';
 
 @Controller('books')
 export class BooksController {
@@ -26,8 +27,8 @@ export class BooksController {
   }
 
   @Get()
-  async findAll(@Query('read') read?: boolean): Promise<Book[]> {
-    return this.booksService.findAll(read);
+  async findAll(@Query() query: FilterBookDto): Promise<Book[]> {
+    return this.booksService.findAll(query.read);
   }
 
   @Get('search')
