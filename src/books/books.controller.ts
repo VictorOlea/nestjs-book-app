@@ -7,12 +7,14 @@ import {
   Param,
   Delete,
   Query,
+  ValidationPipe,
 } from '@nestjs/common';
 import { BooksService } from './books.service';
 import { CreateBookDto } from './dto/create-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
 import { Book } from './entities/book.entity';
 import { SearchBookDto } from './dto/search-book.dto';
+import { ParamsIdDto } from './dto/params-id.dto';
 
 @Controller('books')
 export class BooksController {
@@ -34,25 +36,25 @@ export class BooksController {
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string): Promise<Book> {
-    return this.booksService.findOne(+id);
+  async findOne(@Param() params: ParamsIdDto): Promise<Book> {
+    return this.booksService.findOne(params.id);
   }
 
   @Patch(':id')
   async update(
-    @Param('id') id: string,
+    @Param() params: ParamsIdDto,
     @Body() updateBookDto: UpdateBookDto,
   ): Promise<Book> {
-    return this.booksService.update(+id, updateBookDto);
+    return this.booksService.update(params.id, updateBookDto);
   }
 
   @Patch(':id/restore')
-  async restore(@Param('id') id: string): Promise<Book> {
-    return this.booksService.restore(+id);
+  async restore(@Param() params: ParamsIdDto): Promise<Book> {
+    return this.booksService.restore(params.id);
   }
 
   @Delete(':id')
-  async remove(@Param('id') id: string): Promise<Book> {
-    return this.booksService.remove(+id);
+  async remove(@Param() params: ParamsIdDto): Promise<Book> {
+    return this.booksService.remove(params.id);
   }
 }
