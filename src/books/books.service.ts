@@ -4,6 +4,7 @@ import { UpdateBookDto } from './dto/update-book.dto';
 import { Book } from './entities/book.entity';
 import { ILike, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { BookResponseDto } from './dto/book-response.dto';
 
 @Injectable()
 export class BooksService {
@@ -17,11 +18,17 @@ export class BooksService {
     return await this.bookRepository.save(createBook);
   }
 
-  async findAll(read?: boolean): Promise<Book[]> {
-    if (read !== undefined) {
-      return this.bookRepository.find({ where: { isRead: read } });
-    }
-    return this.bookRepository.find({ order: { id: 'ASC' } });
+  async findAll(read?: boolean): Promise<BookResponseDto[]> {
+    const books = await this.bookRepository.find({
+      where: read !== undefined ? { isRead: read } : {},
+      order: { id: 'ASC' },
+    });
+
+    return books.map(({ title, author, gender }) => ({
+      title,
+      author,
+      gender,
+    }));
   }
 
   async findOne(id: number): Promise<Book> {

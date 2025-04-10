@@ -16,6 +16,7 @@ import { Book } from './entities/book.entity';
 import { SearchBookDto } from './dto/search-book.dto';
 import { ParamsIdDto } from './dto/params-id.dto';
 import { FilterBookDto } from './dto/filter-book.dto';
+import { BookResponseDto } from './dto/book-response.dto';
 
 @Controller('books')
 export class BooksController {
@@ -27,7 +28,7 @@ export class BooksController {
   }
 
   @Get()
-  async findAll(@Query() query: FilterBookDto): Promise<Book[]> {
+  async findAll(@Query() query: FilterBookDto): Promise<BookResponseDto[]> {
     return this.booksService.findAll(query.read);
   }
 
