@@ -5,6 +5,7 @@ import { Book } from './entities/book.entity';
 import { ILike, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BookResponseDto } from './dto/book-response.dto';
+import { toBookResponseDtoArray } from './mappers/book.mapper';
 
 @Injectable()
 export class BooksService {
@@ -24,11 +25,7 @@ export class BooksService {
       order: { id: 'ASC' },
     });
 
-    return books.map(({ title, author, gender }) => ({
-      title,
-      author,
-      gender,
-    }));
+    return toBookResponseDtoArray(books);
   }
 
   async findOne(id: number): Promise<Book> {
